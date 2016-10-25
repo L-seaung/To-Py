@@ -2,30 +2,25 @@
 # -*- coding:utf-8 -*-
 
 import socket
-BUFF = 1024
+
 HOST = ''
-PORT = 65534
+PORT = 56732
+BUFFER = 1024
 ADDRESS = (HOST, PORT)
 
-sock = socket.socket(socket.AF_INET, socket.STREAM)
 
-def tcpServer(host, port):
-    try:
-        print "please wating connection......"
-        sock.connect(ADDRESS)
-    except Exception as e:
-        print " %s erros!" % e
-    try:
-        data_recv = sock.recv(BUFF)
-        print "recvfrom %s data..." % data_recv
-    except Exception as e:
-        print "%s errors!" % e
-        
-def main():
-    pass
-        
-        
-        
-        
-if __name__ == '__main__':
-    main()
+tcpServer = socket.socket(socket.AF_INET, socket.SOCK_STREAM)#
+tcpServer.bind(ADDRESS)#
+tcpServer.listen(5)#设置最大连接数为5
+#
+while True:
+    tcpClient, address = tcpServer.accept()#
+    print "the connection from %s" %address
+    while True:
+        data = tcpClient.recv(BUFFER)#
+        if not data:
+            break
+#
+        print data
+    tcpClient.close()
+tcpServer.close()
