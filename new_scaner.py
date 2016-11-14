@@ -2,17 +2,19 @@
 # -*- coding:utf-8 -*-
 import threading
 from socket import *
-
-lock = threading.Lock()
-openNum = 0
-threads = []
+""""
+该例子加入了线程来处理端口的扫描，从而提高扫描的速度
+""""
+lock = threading.Lock()#定义全局线程锁
+openNum = 0#端口的数量
+threads = [] 
 
 def portScaner(host, port):
   global openNum
   try:
       s = socket(AF_INET, SOCK_STREAM)
       s.connect((host, port))
-      lock.acquire()
+      lock.acquire()#
       openNum += 1
       print('[+] host %s: %d port'%(host, port))
       lock.release()
